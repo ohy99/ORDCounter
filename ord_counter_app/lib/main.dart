@@ -5,6 +5,11 @@ import 'dart:async';
 
 import 'mainpageview.dart';
 
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'pages/Mainpage.dart';
+import 'setuppage.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -50,25 +55,90 @@ class SplashPage extends StatefulWidget {
   SplashPageState createState() => SplashPageState();
 }
 
-class SplashPageState extends State<SplashPage> {
+class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin  {
 
   //var gif;
+  AnimationController _animationController;
 
   @override
   void initState() {
+    _animationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 5900));
+    _animationController.forward();
     super.initState();
-    
-    //gif = decodeAnimation(File('assets/images/cute.gif').readAsBytesSync());
-    Timer(Duration(seconds: 2), () { 
-      Navigator.pushReplacement(context , MaterialPageRoute(builder: (BuildContext context) => MainPageView()));
+
+    Timer(Duration(seconds: _animationController.duration.inSeconds), () { 
+      Navigator.pushReplacement(context , MaterialPageRoute(builder: (BuildContext context) => SetupPage()));
     });
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        //child: Image.asset('assets/images/cute.gif'),
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: <Widget>[
+              SplashIcon(animationController: _animationController),
+              TextandImage(animationController: _animationController)
+            ],
+          ),
+        );
+  }
+}
+
+
+class TextandImage extends StatelessWidget {
+  final AnimationController animationController;
+
+  TextandImage({
+    @required this.animationController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: FadeTransition(
+        opacity: animationController,
+        child: Text("OWADIO",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            )),
+      ),
+    );
+  }
+}
+
+class SplashIcon extends StatelessWidget {
+  final AnimationController animationController;
+
+  SplashIcon({
+    @required this.animationController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: FadeTransition(
+        opacity: animationController,
+        child: Container(
+          clipBehavior: Clip.antiAlias,
+          width: MediaQuery.of(context).size.width / 2,
+          height: MediaQuery.of(context).size.height / 4 - 17,
+          alignment: Alignment.center,
+          child: Lottie.asset("assets/images/NSman.json"),
+          decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.lightBlue,
+              borderRadius: BorderRadius.circular(60)),
+        ),
       ),
     );
   }

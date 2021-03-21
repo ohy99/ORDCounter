@@ -5,18 +5,38 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'achievementpage.dart';
 import 'mybgscroller.dart';
 import 'shoppage.dart';
+import 'package:lottie/lottie.dart';
+
+class Imagest extends StatelessWidget {  
+
+  PageController pageController;
+  double offset;
+  int numberOfPages;
+  Imagest({this.pageController, this.offset, this.numberOfPages});
+
+  @override
+  Widget build(BuildContext context) {
+    //return Consumer<PageOffsetNotifier>(
+    //  builder: (context, notifier, child) {
+        return 
+          FittedBox(
+              
+              alignment: Alignment(-1.0 + (offset / (numberOfPages - 1)) * 2,0),
+              fit: BoxFit.none,
+                child :IgnorePointer(
+                  
+                  child: Lottie.asset("assets/images/landscapes2.json", 
+                  width: MediaQuery.of(context).size.width * numberOfPages,
+                  height: MediaQuery.of(context).size.height
+                  ),
+                ),
+              );
+  }
+}
+
 
 class MainPageView extends StatefulWidget {
   MainPageView({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -30,10 +50,10 @@ class MainPageViewState extends State<MainPageView> {
   final PageController controller = PageController(initialPage: 1);
   List<Widget> pageList = [
     
+              ShopPage(),
               HomePage(),
               //HomePage(),
               AchievementPage(),
-              ShopPage(),
             ];
   double _currentPosition = 0.0;
   double _validPosition(double position) {
@@ -51,7 +71,10 @@ class MainPageViewState extends State<MainPageView> {
     );
   }
   void _updatePosition(double position) {
-    setState(() => _currentPosition = _validPosition(position));
+    setState((){ 
+      _currentPosition = _validPosition(position);
+      //print(_currentPosition);
+      });
   }
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -73,6 +96,9 @@ class MainPageViewState extends State<MainPageView> {
     //bgScroller.numOfPage = pageList.length;
 
     _updatePosition(controller.initialPage.toDouble());
+    controller.addListener(() { setState(() {
+      _updatePosition(controller.page);
+    }); });
 
   }
 
@@ -84,12 +110,14 @@ class MainPageViewState extends State<MainPageView> {
       key: scaffoldKey,
       body: Stack(
         children: [
-
+          Imagest(pageController: this.controller, offset: _currentPosition, numberOfPages: pageList.length),
           PageView(
             scrollDirection: Axis.horizontal,
             controller: controller,
             children: pageList,
-            onPageChanged: (int p) { _updatePosition(p.toDouble()); },
+            onPageChanged: (int p) { //_updatePosition(p.toDouble()); 
+            },
+            
           ),
           Positioned(
               left: 10,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'mybgscroller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+import 'mystrings.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -22,6 +25,15 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
 
+  double ordValue = 0.0;
+  int daysLeft = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ord_value().whenComplete(() => setState((){}));
+  }
+
   @override
   Widget build(BuildContext context)
   {
@@ -30,31 +42,43 @@ class HomePageState extends State<HomePage> {
     return Stack(
 
       children: [
-        // Container(
-        //   height: MediaQuery. of(context). size. height,
-        //     child: ClipRect( 
-              
-        //       child : bgScroller.getPage(context, 0),
-        //     ),
-          
-        // ),
         Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'xx Days to ORD',
+                '$daysLeft Days to ORD',
               ),
               
             ],
           ),
         ),
         Center(
-          child: CircularProgressIndicator(
-              value: 0.8,
+          child: SizedBox(
+            width: 100,
+            height: 100,
+            child: CircularProgressIndicator(
+              value: ordValue,
             ),
+          ),
         )
       ],
     );
+  }
+
+  Future<double> ord_value() async
+  {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String enlistDate = prefs.getString(MyStrings.sp_enlistmentdate);
+    String ordDate = prefs.getString(MyStrings.sp_orddate);
+    DateTime eD = DateFormat(MyStrings.sp_date_format).parse('$enlistDate');
+    DateTime oD = DateFormat(MyStrings.sp_date_format).parse('$ordDate');
+
+    int total = oD.difference(eD).inDays;
+    int d = oD.difference(DateTime.now()).inDays;
+    daysLeft = d;
+    ordValue = 1.0 - (d.toDouble()/total.toDouble());
+    return ordValue;
   }
 }
