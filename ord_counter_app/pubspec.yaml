@@ -28,7 +28,7 @@ dependencies:
   # sqflite: ^2.0.0+2
   games_services: ^1.0.0
   dots_indicator: ^2.0.0
-  image: ^3.0.2
+  # image: ^3.0.2
   provider: ^5.0.0
   lottie: ^1.0.1
   intl: ^0.17.0
