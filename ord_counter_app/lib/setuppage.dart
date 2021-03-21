@@ -60,38 +60,39 @@ class SetupPageState extends State<SetupPage> {
 
       body: Form(
         key: _formKey,
-        child: Column(
-          children: <Widget>[
-            // Add TextFormFields and ElevatedButton here.
-            Text('Enlistment Date'),
-            TextFormField(
-              controller: controllerList[MyStrings.sp_enlistmentdate],
-              enabled: false,
-              validator: _default_validator,
-            ),
-            TextButton(
-              onPressed: ()=>_selectDate(context, controllerList[MyStrings.sp_enlistmentdate]), child: Text('Select Date')
-            ),
-            Text('ORD Date'),
-            TextFormField(
-              controller: controllerList[MyStrings.sp_orddate],
-              enabled: false,
-              validator: _default_validator,
-            ),
-            TextButton(
-              onPressed: ()=>_selectDate(context, controllerList[MyStrings.sp_orddate]), child: Text('Select Date')
-            ),
-            TextButton(
-              onPressed: () { 
-                if (_formKey.currentState.validate())
-                {
-                  submit_info();
-                }
-              }, 
-              child: Text('Submit')
-            ),
-          ]
-        )
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // Add TextFormFields and ElevatedButton here.
+              Text('Enlistment Date'),
+              TextFormField(
+                controller: controllerList[MyStrings.sp_enlistmentdate],
+                enabled: false,
+                validator: _default_validator,
+              ),
+              TextButton(
+                onPressed: ()=>_selectDate(context, controllerList[MyStrings.sp_enlistmentdate]), child: Text('Select Date')
+              ),
+              Text('ORD Date'),
+              TextFormField(
+                controller: controllerList[MyStrings.sp_orddate],
+                enabled: false,
+                validator: _default_validator,
+              ),
+              TextButton(
+                onPressed: ()=>_selectDate(context, controllerList[MyStrings.sp_orddate]), child: Text('Select Date')
+              ),
+              TextButton(
+                onPressed: () { 
+                  if (_formKey.currentState.validate())
+                  {
+                    submit_info();
+                  }
+                }, 
+                child: Text('Submit')
+              ),
+            ]
+          ) 
         
       )
     );

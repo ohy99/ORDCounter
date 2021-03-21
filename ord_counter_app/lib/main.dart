@@ -64,8 +64,8 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
   void initState() {
     _animationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 5900));
-    _animationController.forward();
     super.initState();
+    _animationController.forward();
 
     Timer(Duration(seconds: _animationController.duration.inSeconds), () { 
       Navigator.pushReplacement(context , MaterialPageRoute(builder: (BuildContext context) => SetupPage()));
