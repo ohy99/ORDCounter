@@ -9,6 +9,8 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'pages/Mainpage.dart';
 import 'setuppage.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'signup.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,6 +33,9 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.green,
+        textTheme: GoogleFonts.indieFlowerTextTheme(
+           Theme.of(context).textTheme,
+        ),
       ),
       home: SplashPage(title: 'ORD Counter'),
     );
@@ -59,6 +64,7 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
 
   //var gif;
   AnimationController _animationController;
+  Timer changeScreenTimer;
 
   @override
   void initState() {
@@ -67,9 +73,14 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
     super.initState();
     _animationController.forward();
 
-    Timer(Duration(seconds: _animationController.duration.inSeconds), () { 
-      Navigator.pushReplacement(context , MaterialPageRoute(builder: (BuildContext context) => SetupPage()));
+    changeScreenTimer = Timer(Duration(seconds: _animationController.duration.inSeconds), () { 
+      nextScreen();
     });
+  }
+
+  void nextScreen()
+  {
+    Navigator.pushReplacement(context , MaterialPageRoute(builder: (BuildContext context) => SignUp2()));
   }
 
   @override
@@ -86,7 +97,13 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
           body: Stack(
             children: <Widget>[
               SplashIcon(animationController: _animationController),
-              TextandImage(animationController: _animationController)
+              TextandImage(animationController: _animationController),
+              GestureDetector(
+                onTap: () { 
+                  changeScreenTimer.cancel();
+                  nextScreen();
+                }
+              )
             ],
           ),
         );

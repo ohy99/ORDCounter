@@ -10,11 +10,23 @@ class SetupPage extends StatefulWidget {
   SetupPageState createState() => SetupPageState();
 }
 
+enum EnlistmentType { 
+  m22, m24
+}
+
 class SetupPageState extends State<SetupPage> {  
 
   Map<String, TextEditingController> controllerList = Map<String, TextEditingController>();
   int numOfControllers = 2;
   final _formKey = GlobalKey<FormState>();
+  EnlistmentType enlistmentType = EnlistmentType.m22;
+
+  
+  final PageController controller = PageController(initialPage: 0);
+
+  List<Widget> pageList = [
+    
+  ];
 
   @override
   void initState() {
@@ -24,6 +36,8 @@ class SetupPageState extends State<SetupPage> {
     controllerList[MyStrings.sp_enlistmentdate] = TextEditingController();
     controllerList[MyStrings.sp_orddate] = TextEditingController();
     controllerList[MyStrings.sp_birthdate] = TextEditingController();
+    controllerList[MyStrings.sp_name] = TextEditingController();
+    controllerList[MyStrings.sp_popdate] = TextEditingController();
   }
 
   Future<Null> _selectDate(BuildContext context, TextEditingController controller) async {
@@ -57,44 +71,58 @@ class SetupPageState extends State<SetupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: Column(
+        children: [
+          Container(
 
-      body: Form(
-        key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // Add TextFormFields and ElevatedButton here.
-              Text('Enlistment Date'),
-              TextFormField(
-                controller: controllerList[MyStrings.sp_enlistmentdate],
-                enabled: false,
-                validator: _default_validator,
-              ),
-              TextButton(
-                onPressed: ()=>_selectDate(context, controllerList[MyStrings.sp_enlistmentdate]), child: Text('Select Date')
-              ),
-              Text('ORD Date'),
-              TextFormField(
-                controller: controllerList[MyStrings.sp_orddate],
-                enabled: false,
-                validator: _default_validator,
-              ),
-              TextButton(
-                onPressed: ()=>_selectDate(context, controllerList[MyStrings.sp_orddate]), child: Text('Select Date')
-              ),
-              TextButton(
-                onPressed: () { 
-                  if (_formKey.currentState.validate())
-                  {
-                    submit_info();
-                  }
-                }, 
-                child: Text('Submit')
-              ),
-            ]
-          ) 
-        
-      )
+          ),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Text('Name'),
+                TextFormField(
+                  controller: controllerList[MyStrings.sp_name],
+                ),
+                Text('ORD Date'),
+                TextFormField(
+                  controller: controllerList[MyStrings.sp_orddate],
+                ),
+                TextButton(
+                  child: Text('Select date'),
+                  onPressed: () =>_selectDate(context, controllerList[MyStrings.sp_orddate]),
+                ),
+                Text('POP Date'),
+                TextFormField(
+                  controller: controllerList[MyStrings.sp_popdate],
+                  
+                ),
+                TextButton(
+                  child: Text('Select date'),
+                  onPressed: () =>_selectDate(context, controllerList[MyStrings.sp_popdate]),
+                ),
+                Text('Service Term'),
+                enlistmentRadios(),
+              ],
+            ),
+            
+          ),
+          TextButton(
+            child: Text('NEXT'),
+            onPressed: () { 
+              submit_info();
+              //Navigator.pushReplacement(context,  MaterialPageRoute(builder: (BuildContext context) => MainPageView())); 
+            },
+          ),
+          TextButton(
+            child: Text('SKIP'),
+            onPressed: () { 
+              //submit_info();
+              Navigator.pushReplacement(context,  MaterialPageRoute(builder: (BuildContext context) => MainPageView())); 
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -104,7 +132,75 @@ class SetupPageState extends State<SetupPage> {
     //prefs.setBool('first_time?', false);
     prefs.setString(MyStrings.sp_enlistmentdate, controllerList[MyStrings.sp_enlistmentdate].value.text);
     prefs.setString(MyStrings.sp_orddate, controllerList[MyStrings.sp_orddate].value.text);
+    prefs.setString(MyStrings.sp_name, controllerList[MyStrings.sp_name].value.text);
+    //prefs.setInt(MyStrings.sp_name, controllerList[MyStrings.sp_serviceterm].value.text);
+    prefs.setInt(MyStrings.sp_serviceterm, enlistmentType == EnlistmentType.m22 ? 22 : 24);
 
     Navigator.pushReplacement(context,  MaterialPageRoute(builder: (BuildContext context) => MainPageView()));
   }
+
+  Widget enlistmentRadios()
+  {
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
+            child: RadioListTile<EnlistmentType>(
+            title: const Text('22 Months'),
+            value: EnlistmentType.m22,
+            groupValue: enlistmentType,
+            onChanged: (EnlistmentType value) {
+              setState(() {
+                enlistmentType = value;
+              });
+            },
+          ),
+          ),
+          VerticalDivider(
+            width: 10,
+            thickness: 2,
+            indent: 15,
+            endIndent: 15,
+            color: Colors.grey,
+          ),
+          
+          Expanded(
+            child : RadioListTile<EnlistmentType>(
+            title: const Text('24 Months'),
+            value: EnlistmentType.m24,
+            groupValue: enlistmentType,
+            onChanged: (EnlistmentType value) {
+              setState(() {
+                enlistmentType = value;
+              });
+            },
+          ),
+          ),
+          
+          
+        ],
+      ),
+    );
+    
+  }
+
+  Widget page_name() {
+    return Column(
+      children: [
+        TextField(
+          controller: controllerList[MyStrings.sp_name],
+        )
+      ],
+    );
+  }
+  Widget page_ord() {
+
+  }
+  Widget page_pop() {
+
+  }
+  Widget page_serviceterm(){
+
+  }
+
 }

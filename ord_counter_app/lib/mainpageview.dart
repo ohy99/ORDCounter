@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'homepage.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'achievementpage.dart';
+import 'upcomingpage.dart';
 import 'mybgscroller.dart';
-import 'shoppage.dart';
+import 'friendspage.dart';
 import 'package:lottie/lottie.dart';
 
 class Imagest extends StatelessWidget {  
@@ -47,13 +47,13 @@ class MainPageView extends StatefulWidget {
 
 class MainPageViewState extends State<MainPageView> {
 
-  final PageController controller = PageController(initialPage: 1);
+  final PageController controller = PageController(initialPage: 0);
   List<Widget> pageList = [
     
-              ShopPage(),
+              //FriendsPage(),
               HomePage(),
               //HomePage(),
-              AchievementPage(),
+              UpcomingPage(),
             ];
   double _currentPosition = 0.0;
   double _validPosition(double position) {
@@ -85,6 +85,7 @@ class MainPageViewState extends State<MainPageView> {
           side: BorderSide.none,
           borderRadius: BorderRadius.circular(5.0),
           ),
+        activeColor: Colors.white70,
       );
 
 
@@ -110,7 +111,7 @@ class MainPageViewState extends State<MainPageView> {
       key: scaffoldKey,
       body: Stack(
         children: [
-          Imagest(pageController: this.controller, offset: _currentPosition, numberOfPages: pageList.length),
+          //Imagest(pageController: this.controller, offset: _currentPosition, numberOfPages: pageList.length),
           PageView(
             scrollDirection: Axis.horizontal,
             controller: controller,
@@ -130,7 +131,7 @@ class MainPageViewState extends State<MainPageView> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              margin: EdgeInsets.only(bottom: 80),
+              margin: EdgeInsets.only(bottom: 30),
               child: _buildRow([
                 DotsIndicator(
                   dotsCount: pageList.length,

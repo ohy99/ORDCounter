@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ord_counter_app">
    <application
-        android:label="ord_counter_app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="ORD loh"
+        android:icon="@mipmap/ic_ord_foreground">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
