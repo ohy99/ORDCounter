@@ -8,7 +8,11 @@ class MyRiveAnimation extends StatefulWidget {
 }
 
 class _MyRiveAnimationState extends State<MyRiveAnimation> {
+<<<<<<< HEAD
   final riveFileName = 'assets/images/soldieranimas.riv';
+=======
+  final riveFileName = 'assets/Humaaans/soldieranimas.riv';
+>>>>>>> 152264f1be8c62a22ae62ad58f7d207056d23236
   Artboard _artboard;
 
   @override
@@ -43,6 +47,7 @@ class _MyRiveAnimationState extends State<MyRiveAnimation> {
         : Container();
   }
 }
+<<<<<<< HEAD
 
 class MyBgAnimation extends StatefulWidget {
   @override
@@ -85,3 +90,5 @@ class _MyBgAnimationState extends State<MyBgAnimation> {
         : Container();
   }
 }
+=======
+>>>>>>> 152264f1be8c62a22ae62ad58f7d207056d23236
