@@ -50,7 +50,7 @@ class MyBgAnimation extends StatefulWidget {
 }
 
 class _MyBgAnimationState extends State<MyBgAnimation> {
-  final riveFileName = 'assets/images/bgforapp.riv';
+  final riveFileName = 'assets/images/bgapplooped.riv';
   Artboard _artboard;
 
   @override
