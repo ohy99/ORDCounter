@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import "package:lottie/lottie.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ord_counter_app/riveanima.dart';
 import 'package:ord_counter_app/setuppage.dart';
 import 'mainpageview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,7 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation _animation;
   final PageController _pageController = PageController();
-  
+
   TextEditingController _nameEditingController = TextEditingController();
   final formkey = GlobalKey<FormState>();
   Map<String, DateTime> selectedDates = Map();
@@ -59,14 +60,10 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.6,
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: 500,
-                height: 500,
-                child: Lottie.asset("assets/Humaaans/wizard.json"),
-              ),
-            ),
+                height: MediaQuery.of(context).size.height * 0.6,
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                    width: 500, height: 500, child: MyRiveAnimation())),
             Container(
               height: 120,
               //width: 300,
@@ -90,7 +87,10 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
                 label: Text("Next"),
                 icon: Icon(Icons.input),
                 onPressed: () {
-                  Navigator.pushReplacement(context,  MaterialPageRoute(builder: (BuildContext context) => MainPageView()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MainPageView()));
                   submit_info();
                 },
               ),
@@ -102,8 +102,8 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
             begin: Alignment(_animation.value, _animation.value),
             end: Alignment(_animation.value, _animation.value - 1),
             colors: [
-              Colors.blue[100],
-              Colors.blue[400],
+              Colors.brown[600],
+              Colors.brown[400],
             ],
           ),
         ),
@@ -111,19 +111,19 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
     );
   }
 
-  void submit_info() async
-  {
+  void submit_info() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     //prefs.setBool('first_time?', false);
     //prefs.setString(MyStrings.sp_enlistmentdate, controllerList[MyStrings.sp_enlistmentdate].value.text);
-    prefs.setString(MyStrings.sp_orddate, DateFormat(MyStrings.sp_date_format).format(selectedDates[keys[0]]));
+    prefs.setString(MyStrings.sp_orddate,
+        DateFormat(MyStrings.sp_date_format).format(selectedDates[keys[0]]));
     prefs.setString(MyStrings.sp_name, _nameEditingController.text);
     //prefs.setInt(MyStrings.sp_name, controllerList[MyStrings.sp_serviceterm].value.text);
     prefs.setInt(MyStrings.sp_serviceterm, etypeselected == etype[0] ? 22 : 24);
 
-    Navigator.pushReplacement(context,  MaterialPageRoute(builder: (BuildContext context) => MainPageView()));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => MainPageView()));
   }
-
 
   Widget build_name_field(BuildContext context) {
     return Form(
@@ -156,70 +156,65 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
               initialDateTime: DateTime.now(),
               mode: CupertinoDatePickerMode.date,
               onDateTimeChanged: (DateTime newdate) {
-                selectedDates[key]= newdate;
+                selectedDates[key] = newdate;
               },
               minimumYear: DateTime.now().year - 5,
               maximumYear: DateTime.now().year + 10,
-              
             ),
           ),
         ],
       ),
     );
   }
-  
-Widget serviceType(context) {
-  return CupertinoPageScaffold(
-    backgroundColor: Colors.transparent,
-    child: Center(
-      child: CupertinoButton(
-        onPressed: () {
-          showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) => CupertinoActionSheet(
-              title: const Text('Service Term'),
-              message: const Text('Please select your length of service'),
-              actions: [
-                CupertinoActionSheetAction(
-                  child: Text(
-                    etype[0],
-                    style: nameTextstyle,
+
+  Widget serviceType(context) {
+    return CupertinoPageScaffold(
+      backgroundColor: Colors.transparent,
+      child: Center(
+        child: CupertinoButton(
+          onPressed: () {
+            showCupertinoModalPopup(
+              context: context,
+              builder: (BuildContext context) => CupertinoActionSheet(
+                title: const Text('Service Term'),
+                message: const Text('Please select your length of service'),
+                actions: [
+                  CupertinoActionSheetAction(
+                    child: Text(
+                      etype[0],
+                      style: nameTextstyle,
+                    ),
+                    onPressed: () {
+                      etypeselected = etype[0];
+                      Navigator.pop(context);
+                    },
                   ),
-                  onPressed: () {
-                    etypeselected = etype[0];
-                    Navigator.pop(context);
-                  },
-                ),
-                CupertinoActionSheetAction(
-                  child: Text(
-                    etype[1],
-                    style: nameTextstyle,
+                  CupertinoActionSheetAction(
+                    child: Text(
+                      etype[1],
+                      style: nameTextstyle,
+                    ),
+                    onPressed: () {
+                      etypeselected = etype[1];
+                      Navigator.pop(context);
+                    },
                   ),
-                  onPressed: () {
-                    etypeselected = etype[1];
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
+                ],
+              ),
+            );
+          },
+          child: Text(
+            'ServiceTerm',
+            style: GoogleFonts.gloriaHallelujah(
+              fontSize: 36,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
-          );
-        },
-        child: Text(
-          'ServiceTerm',
-          style: GoogleFonts.gloriaHallelujah(
-            fontSize: 36,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
           ),
         ),
       ),
-    ),
-  );
-}
-
-
-
-
+    );
+  }
 }
 
 var nameTextstyle =

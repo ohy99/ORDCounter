@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ord_counter_app/riveanima.dart';
 
 import 'homepage.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -7,8 +8,7 @@ import 'mybgscroller.dart';
 import 'friendspage.dart';
 import 'package:lottie/lottie.dart';
 
-class Imagest extends StatelessWidget {  
-
+class Imagest extends StatelessWidget {
   PageController pageController;
   double offset;
   int numberOfPages;
@@ -18,22 +18,18 @@ class Imagest extends StatelessWidget {
   Widget build(BuildContext context) {
     //return Consumer<PageOffsetNotifier>(
     //  builder: (context, notifier, child) {
-        return 
-          FittedBox(
-              
-              alignment: Alignment(-1.0 + (offset / (numberOfPages - 1)) * 2,0),
-              fit: BoxFit.none,
-                child :IgnorePointer(
-                  
-                  child: Lottie.asset("assets/images/landscapes2.json", 
-                  width: MediaQuery.of(context).size.width * numberOfPages,
-                  height: MediaQuery.of(context).size.height
-                  ),
-                ),
-              );
+    return FittedBox(
+      alignment: Alignment(-1.0 + (offset / (numberOfPages - 1)) * 2, 0),
+      fit: BoxFit.none,
+      child: IgnorePointer(
+        child: Container(
+            child: MyBgAnimation(),
+            width: MediaQuery.of(context).size.width * numberOfPages,
+            height: MediaQuery.of(context).size.height),
+      ),
+    );
   }
 }
-
 
 class MainPageView extends StatefulWidget {
   MainPageView({Key key, this.title}) : super(key: key);
@@ -44,23 +40,21 @@ class MainPageView extends StatefulWidget {
   MainPageViewState createState() => MainPageViewState();
 }
 
-
 class MainPageViewState extends State<MainPageView> {
-
   final PageController controller = PageController(initialPage: 0);
   List<Widget> pageList = [
-    
-              //FriendsPage(),
-              HomePage(),
-              //HomePage(),
-              UpcomingPage(),
-            ];
+    //FriendsPage(),
+    HomePage(),
+    //HomePage(),
+    UpcomingPage(),
+  ];
   double _currentPosition = 0.0;
   double _validPosition(double position) {
     if (position >= pageList.length) return 0;
     if (position < 0) return pageList.length - 1.0;
     return position;
   }
+
   Widget _buildRow(List<Widget> widgets) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
@@ -70,24 +64,24 @@ class MainPageViewState extends State<MainPageView> {
       ),
     );
   }
+
   void _updatePosition(double position) {
-    setState((){ 
+    setState(() {
       _currentPosition = _validPosition(position);
       //print(_currentPosition);
-      });
+    });
   }
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
   DotsDecorator decorator = DotsDecorator(
-        size: const Size.square(9.0),
-        activeSize: const Size(18.0, 9.0),
-        activeShape: RoundedRectangleBorder(
-          side: BorderSide.none,
-          borderRadius: BorderRadius.circular(5.0),
-          ),
-        activeColor: Colors.white70,
-      );
-
+    size: const Size.square(9.0),
+    activeSize: const Size(18.0, 9.0),
+    activeShape: RoundedRectangleBorder(
+      side: BorderSide.none,
+      borderRadius: BorderRadius.circular(5.0),
+    ),
+    activeColor: Colors.white70,
+  );
 
   @override
   void initState() {
@@ -97,16 +91,15 @@ class MainPageViewState extends State<MainPageView> {
     //bgScroller.numOfPage = pageList.length;
 
     _updatePosition(controller.initialPage.toDouble());
-    controller.addListener(() { setState(() {
-      _updatePosition(controller.page);
-    }); });
-
+    controller.addListener(() {
+      setState(() {
+        _updatePosition(controller.page);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       key: scaffoldKey,
       body: Stack(
@@ -116,18 +109,18 @@ class MainPageViewState extends State<MainPageView> {
             scrollDirection: Axis.horizontal,
             controller: controller,
             children: pageList,
-            onPageChanged: (int p) { //_updatePosition(p.toDouble()); 
+            onPageChanged: (int p) {
+              //_updatePosition(p.toDouble());
             },
-            
           ),
           Positioned(
-              left: 10,
-              top: 20,
-              child: IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () => scaffoldKey.currentState.openDrawer(),
-              ),
+            left: 10,
+            top: 20,
+            child: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => scaffoldKey.currentState.openDrawer(),
             ),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -140,9 +133,7 @@ class MainPageViewState extends State<MainPageView> {
                 ),
               ]),
             ),
-            
           ),
-            
         ],
       ),
       drawer: Drawer(
@@ -154,34 +145,29 @@ class MainPageViewState extends State<MainPageView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                ListTile(
-                  leading: Icon(Icons.face),
-                  title: Text('Header name'),
-                  subtitle: Text('Im gona ord'),
-                  onTap: () {
-                    // Update the state of the app
-                    // ...
-                    // Then close the drawer
-                    Navigator.pop(context);
-                  },
-                ),
-                Text(
-                  'Badges',
-                  textAlign: TextAlign.left,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top:10),
-                  child: Row(
-                    children: [
-                      Icon(Icons.circle),
-                      Icon(Icons.stairs)
-                    ],
+                  ListTile(
+                    leading: Icon(Icons.face),
+                    title: Text('Header name'),
+                    subtitle: Text('Im gona ord'),
+                    onTap: () {
+                      // Update the state of the app
+                      // ...
+                      // Then close the drawer
+                      Navigator.pop(context);
+                    },
                   ),
-                ),
-                
+                  Text(
+                    'Badges',
+                    textAlign: TextAlign.left,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: [Icon(Icons.circle), Icon(Icons.stairs)],
+                    ),
+                  ),
                 ],
-              ), 
-              
+              ),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
