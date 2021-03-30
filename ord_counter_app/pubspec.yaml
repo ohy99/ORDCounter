@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^2.0.0
   snapping_sheet: ^3.0.0+2
   syncfusion_flutter_datepicker: ^18.4.49-beta
+  rive: ^0.6.8
+  fluttertoast: ^8.0.3
 
 dev_dependencies:
   flutter_test:
