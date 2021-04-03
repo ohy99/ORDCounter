@@ -38,7 +38,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Widget sheet_behind() {
     return Stack(children: [
-      Imagest(),
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -65,9 +64,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ],
             ),
           )),
-          Expanded(
-            child: Container(),
-          ),
+          // Expanded(
+          //   child: Container(),
+          // ),
         ],
       ),
       //gauges
