@@ -14,18 +14,29 @@ class MyStrings {
   //save format
   //0: type
   //1: name
-  // ...
+  // ...+
   //2: min
   //3: max
   //4: date ...
   static const String eventtype_range = 'event_range';
-  //2: date
+  //2: count?
   //3: date ...
   static const String eventtype_multipledates = 'event_manydates';
   //2: date
   static const String eventtype_date = 'event_date';
   //2: count
   static const String eventtype_counter = 'event_counter';
+
+  //new save format
+  //0: name
+  //1: repeat count - min '0'
+  //2: lastdate - default to ''
+  //3: min - default to ''
+  //4: max - default to ''
+  //5: date count - min '1'
+  //6: date...
   
   
+  static const String addevent_displaydate_format = "EEE, dd MMM yyyy";
 }
+

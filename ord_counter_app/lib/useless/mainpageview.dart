@@ -3,7 +3,7 @@ import 'package:ord_counter_app/riveanima.dart';
 
 import 'homepage.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'upcomingpage.dart';
+import '../upcomingpage.dart';
 import 'mybgscroller.dart';
 import 'friendspage.dart';
 import 'package:lottie/lottie.dart';

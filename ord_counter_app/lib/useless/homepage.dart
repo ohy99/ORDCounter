@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ord_counter_app/mainpageview.dart';
+import 'package:ord_counter_app/useless/mainpageview.dart';
 import 'package:ord_counter_app/riveanima.dart';
 import 'mybgscroller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
-import 'mystrings.dart';
+import '../mystrings.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 class HomePage extends StatefulWidget {

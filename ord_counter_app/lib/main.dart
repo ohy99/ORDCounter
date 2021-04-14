@@ -1,14 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:image/image.dart';
 import 'dart:io';
 import 'dart:async';
 
-import 'mainpageview.dart';
+import 'useless/mainpageview.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'pages/Mainpage.dart';
-import 'setuppage.dart';
+import 'useless/setuppage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'signup.dart';
 
@@ -21,7 +22,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+      //   DefaultMaterialLocalizations.delegate,
+      //   DefaultWidgetsLocalizations.delegate,
+      //   DefaultCupertinoLocalizations.delegate,
+      // ],
       title: 'ORD Counter',
+      
       theme: ThemeData(
         // This is the theme of your application.
         

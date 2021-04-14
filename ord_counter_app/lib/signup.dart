@@ -6,10 +6,12 @@ import "package:lottie/lottie.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ord_counter_app/riveanima.dart';
-import 'package:ord_counter_app/setuppage.dart';
-import 'mainpageview.dart';
+import 'package:ord_counter_app/useless/setuppage.dart';
+import 'useless/mainpageview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'mystrings.dart';
+import 'mainpage_v2.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignUp2 extends StatefulWidget {
   const SignUp2({Key key}) : super(key: key);
@@ -31,7 +33,7 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
   List<String> etype = ['22 MTHS', '24 MTHS'];
   String etypeselected = '';
 
-  int _currentpage = 0;
+  bool nextEnabled = false;
 
   @override
   void initState() {
@@ -42,8 +44,23 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
     _animationController.repeat(reverse: true);
     _animation = Tween(begin: 0.0, end: 1.0).animate(_animationController)
       ..addListener(() {
-        setState(() {});
+        setState(() {
+          //hacks. coz this is refreshing every frame
+           if (allvaluesfilled())
+            nextEnabled = true;
+          else
+            nextEnabled = false;
+        });
       });
+
+      selectedDates[keys[0]] = DateTime.now();
+      selectedDates[keys[1]] = DateTime.now();
+  }
+
+  bool allvaluesfilled()
+  {
+    return (etypeselected == etype[0] || etypeselected == etype[1]) &&
+    (_nameEditingController.text != null);
   }
 
   @override
@@ -72,11 +89,12 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
                 physics: ClampingScrollPhysics(),
                 children: [
                   Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 100),
+                    width: 300,
+                      //margin: const EdgeInsets.symmetric(horizontal: 100),
                       alignment: Alignment.center,
                       child: build_name_field(context)),
-                  build_cupertino_datepicker("POP Date", keys[0]),
-                  build_cupertino_datepicker("ORD Date", keys[1]),
+                  build_cupertino_datepicker("POP Date", keys[1]),
+                  build_cupertino_datepicker("ORD Date", keys[0]),
                   serviceType(context),
                 ],
               ),
@@ -86,15 +104,31 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
               child: ElevatedButton.icon(
                 label: Text("Next"),
                 icon: Icon(Icons.input),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => MainPageView()));
-                  submit_info();
+               onPressed: nextEnabled == false ? null : () {
+                  if (checkinfo())
+                    submit_info();
                 },
               ),
             ),
+
+            ElevatedButton.icon(
+                label: Text("Clear saves"),
+                icon: Icon(Icons.delete),
+                onPressed: () async {
+                  SharedPreferences sp = await SharedPreferences.getInstance();
+                  sp.clear();
+                },
+
+              ),
+
+              ElevatedButton.icon(
+                label: Text("Skip"),
+                icon: Icon(Icons.exit_to_app),
+                onPressed: () async {
+                  toNextPage();
+                },
+
+              ),
           ],
         ),
         decoration: BoxDecoration(
@@ -111,18 +145,45 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
     );
   }
 
+  void toNextPage()
+  {
+    Navigator.pushReplacement(context,
+      MaterialPageRoute(builder: (BuildContext context) => MainPageV2()));
+  }
+
+  bool checkinfo()
+  {
+    bool ret = selectedDates[keys[0]].isAfter(selectedDates[keys[1]]);
+    //print(keys[0] + ' is ' + (ret?'after ':'before ') + keys[1]);
+    if (ret == false)
+    {
+      Fluttertoast.showToast(
+        msg: "Are you sure you ORD before you POP?",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        //backgroundColor: Colors.,
+        //textColor: Colors.white,
+        fontSize: 16.0
+      );
+    }
+    return ret;
+  }
+
+
   void submit_info() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     //prefs.setBool('first_time?', false);
     //prefs.setString(MyStrings.sp_enlistmentdate, controllerList[MyStrings.sp_enlistmentdate].value.text);
     prefs.setString(MyStrings.sp_orddate,
         DateFormat(MyStrings.sp_date_format).format(selectedDates[keys[0]]));
+    prefs.setString(MyStrings.sp_popdate, 
+        DateFormat(MyStrings.sp_date_format).format(selectedDates[keys[1]]));
     prefs.setString(MyStrings.sp_name, _nameEditingController.text);
     //prefs.setInt(MyStrings.sp_name, controllerList[MyStrings.sp_serviceterm].value.text);
     prefs.setInt(MyStrings.sp_serviceterm, etypeselected == etype[0] ? 22 : 24);
 
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => MainPageView()));
+    toNextPage();
   }
 
   Widget build_name_field(BuildContext context) {
@@ -140,9 +201,11 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
   }
 
   Widget build_cupertino_datepicker(String date, String key) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 80),
-      child: Column(
+    return 
+    //Padding(
+      //padding: EdgeInsets.symmetric(horizontal: 80),
+      //child: 
+      Column(
         children: [
           Expanded(
               child: Padding(
@@ -163,7 +226,7 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
             ),
           ),
         ],
-      ),
+    //  ),
     );
   }
 
@@ -204,11 +267,13 @@ class _SignUp2State extends State<SignUp2> with SingleTickerProviderStateMixin {
             );
           },
           child: Text(
-            'ServiceTerm',
+            'ServiceTerm\n'+ etypeselected,
+            textAlign: TextAlign.center,
             style: GoogleFonts.gloriaHallelujah(
-              fontSize: 36,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Colors.white,
+              
             ),
           ),
         ),

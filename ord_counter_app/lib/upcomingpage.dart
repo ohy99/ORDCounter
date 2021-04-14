@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'mystrings.dart';
 import 'package:intl/intl.dart';
 import 'addeventpage.dart';
+import 'myevent.dart';
 
 class UpcomingPage extends StatefulWidget {
   UpcomingPage({Key key, this.title}) : super(key: key);
@@ -67,7 +68,7 @@ class UpcomingPageState extends State<UpcomingPage>{
           int v = d.difference(DateTime.now()).inDays;
           if (v<0)
           break;
-          eventList.add(MyUpcomingEvent(name: slist[1], date: oD, value: v.toString()));
+          eventList.add(UpcomingEvent(name: slist[1], date: oD, value: v.toString()));
           break;
         case MyStrings.eventtype_multipledates:
         if (slist.length < 3)
@@ -84,7 +85,7 @@ class UpcomingPageState extends State<UpcomingPage>{
           if (diff < closestday)
             closestday = diff;
         }
-        eventList.add(MyUpcomingEvent(name: slist[1], value: closestday.toString() + ' /'+datescount.toString()));
+        eventList.add(UpcomingEvent(name: slist[1], value: closestday.toString() + ' /'+datescount.toString()));
         break;
         case MyStrings.eventtype_range:
         DateTime mind = DateFormat(MyStrings.sp_date_format).parse(slist[2]);
@@ -114,11 +115,11 @@ class UpcomingPageState extends State<UpcomingPage>{
           }
           currmin = currmin.add(Duration(days: range + 1));
         }
-        eventList.add(MyUpcomingEvent(name: slist[1], value: numOfdates.toString()));
+        eventList.add(UpcomingEvent(name: slist[1], value: numOfdates.toString()));
 
         break;
         default:
-          eventList.add(MyUpcomingEvent(name: slist[1], date: oD, value: slist[2]));
+          eventList.add(UpcomingEvent(name: slist[1], date: oD, value: slist[2]));
       }
       
 

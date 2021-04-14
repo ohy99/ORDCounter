@@ -24,4 +24,16 @@ class MyDateTimePicker
       return DateFormat(formatPattern).format(picked);
     return "";
   }
+
+  static Future<DateTime> selectDateTime(BuildContext context, DateTime initial, int yearRange) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: initial,
+        firstDate: DateTime(initial.year - yearRange),
+        lastDate: DateTime(initial.year + yearRange));
+    if (picked != null)
+      return picked;
+    return null;
+  }
+
 }
