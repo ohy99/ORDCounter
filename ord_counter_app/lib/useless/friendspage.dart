@@ -19,13 +19,13 @@ class FriendsPage extends StatefulWidget {
   FriendsPageState createState() => FriendsPageState();
 }
 
-class FriendsPageState extends State<FriendsPage>{
+class FriendsPageState extends State<FriendsPage> {
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     TextStyle name_textStyle = TextStyle(fontSize: 15);
     TextStyle badgeCount_textStyle = TextStyle(fontSize: 20);
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -37,17 +37,13 @@ class FriendsPageState extends State<FriendsPage>{
               style: TextStyle(
                 fontSize: 50,
                 fontWeight: FontWeight.bold,
-                
               ),
             ),
           ),
-          Expanded( 
-            
-            
+          Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50.0),
               child: ListView.builder(
-                
                 shrinkWrap: true,
                 itemCount: 10,
                 itemBuilder: (context, index) {
@@ -66,16 +62,13 @@ class FriendsPageState extends State<FriendsPage>{
                           Expanded(
                             child: Row(
                               children: [
-                                Text(
-                                  index.toString(),
-                                  style: badgeCount_textStyle
-                                ),
-                                
+                                Text(index.toString(),
+                                    style: badgeCount_textStyle),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: Icon(Icons.celebration),
                                 ),
-                                
                               ],
                             ),
                           ),
@@ -87,8 +80,9 @@ class FriendsPageState extends State<FriendsPage>{
               ),
             ),
           ),
-          Container(height: 30,)
-        
+          Container(
+            height: 30,
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(

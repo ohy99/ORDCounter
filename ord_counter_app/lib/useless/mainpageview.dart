@@ -18,14 +18,24 @@ class Imagest extends StatelessWidget {
   Widget build(BuildContext context) {
     //return Consumer<PageOffsetNotifier>(
     //  builder: (context, notifier, child) {
-    return FittedBox(
-      alignment: Alignment(-1.0 + (offset / (numberOfPages - 1)) * 2, 0),
-      fit: BoxFit.none,
-      child: IgnorePointer(
-        child: Container(
+    // return Align(
+    //   alignment: Alignment(-1.0 + (offset / (numberOfPages - 1)) * 2, 0),
+    //   widthFactor: 2,
+    //   // widthFactor: -1.0 + (offset / (numberOfPages - 1)) * 2,
+    //   heightFactor: MediaQuery.of(context).size.height,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: FittedBox(
+        alignment: Alignment(-1.0 + (offset / (numberOfPages - 1)) * 2, -1),
+        fit: BoxFit.none,
+        child: IgnorePointer(
+          child: Container(
             child: MyBgAnimation(),
             width: MediaQuery.of(context).size.width * numberOfPages,
-            height: MediaQuery.of(context).size.height),
+            height: MediaQuery.of(context).size.height,
+            alignment: Alignment.center,
+          ),
+        ),
       ),
     );
   }
@@ -42,12 +52,14 @@ class MainPageView extends StatefulWidget {
 
 class MainPageViewState extends State<MainPageView> {
   final PageController controller = PageController(initialPage: 0);
+  //to show the no. of pages for pageview
   List<Widget> pageList = [
-    //FriendsPage(),
+    FriendsPage(),
     HomePage(),
-    //HomePage(),
+    // HomePage(),
     UpcomingPage(),
   ];
+  // for the snapping of pageview
   double _currentPosition = 0.0;
   double _validPosition(double position) {
     if (position >= pageList.length) return 0;
@@ -65,6 +77,7 @@ class MainPageViewState extends State<MainPageView> {
     );
   }
 
+// cont of above
   void _updatePosition(double position) {
     setState(() {
       _currentPosition = _validPosition(position);
@@ -104,13 +117,16 @@ class MainPageViewState extends State<MainPageView> {
       key: scaffoldKey,
       body: Stack(
         children: [
-          //Imagest(pageController: this.controller, offset: _currentPosition, numberOfPages: pageList.length),
+          Imagest(
+              pageController: this.controller,
+              offset: _currentPosition,
+              numberOfPages: pageList.length),
           PageView(
             scrollDirection: Axis.horizontal,
             controller: controller,
             children: pageList,
             onPageChanged: (int p) {
-              //_updatePosition(p.toDouble());
+              _updatePosition(p.toDouble());
             },
           ),
           Positioned(
