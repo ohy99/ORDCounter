@@ -58,7 +58,7 @@ class AddEventInfoState extends State<AddEventInfoPage>{
     selectedDate = EventManager.instance.tempDateTimeCache;
     if (selectedDate == null)
       selectedDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-    repeatTimes_tec.text = '1';
+    repeatTimes_tec.text = repeatTimes.toString();
 
     
     if (endDate == null)
@@ -100,6 +100,7 @@ class AddEventInfoState extends State<AddEventInfoPage>{
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
                     fontSize: 16.0
+               
                   );
                   return;
                 }

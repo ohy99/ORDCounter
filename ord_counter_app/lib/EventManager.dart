@@ -185,6 +185,7 @@ class EventManager
       prefs.setInt(MyStrings.sp_eventscount, 0);//initialize 0
       await saveInfo('ORD', 0, [oD]);
       count = 1;
+      eventList.clear();//coz will load later dont load twice
     }
     for(int i = 0; i < count; ++i)
     {
